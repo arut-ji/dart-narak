@@ -33,11 +33,11 @@ class Item {
 
 class AVLTree {
   Item item;
-  AVLTree left = null, right = null;
-  int height = -1;
-  int internalElements = 1;
+  AVLTree left, right;
+  int height;
+  int internalElements;
 
-  AVLTree([this.item = null]);
+  AVLTree([this.item = null]) : right = null, left = null, height = -1, internalElements = 1;
 
 
   int _height(AVLTree tree) {
