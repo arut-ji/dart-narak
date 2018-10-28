@@ -41,7 +41,6 @@ class AVLTree {
 
 
   int _height(AVLTree tree) {
-    if(tree == null || tree?.item == null)return 0;
     return tree.height;
   }
 
@@ -88,7 +87,7 @@ class AVLTree {
         return rightRotate(this);
       }
     } else if(balance < -1) {
-      if(_height(this.right.right) >= _height(this.left.right)) {
+      if(_height(this.right.right) >= _height(this.right.left)) {
         return leftRotate(this);
       } else {
         this.right = rightRotate(this.right);
@@ -133,7 +132,7 @@ class AVLTree {
 void main() {
 
   var root = AVLTree();
-  var list = List.generate(100, (index) => index + 1);
+  var list = [3, 1, 2 ,4, 5, 6];
 //  list.shuffle();
   print(list);
   list.forEach((item) => root = root.insert(Item(key: item, value: item)));
