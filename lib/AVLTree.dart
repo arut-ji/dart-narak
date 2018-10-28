@@ -1,3 +1,5 @@
+
+
 class Item {
   int key;
   dynamic value;
@@ -35,9 +37,9 @@ class AVLTree {
   Item item;
   AVLTree left, right;
   int height;
-  int internalElements;
+  int children;
 
-  AVLTree([this.item = null]) : right = null, left = null, height = -1, internalElements = 1;
+  AVLTree([this.item = null]) : right = null, left = null, height = -1, children = 1;
 
 
   int _height(AVLTree tree) {
@@ -48,9 +50,9 @@ class AVLTree {
     return x > y ? x : y;
   }
 
-  int _internalElements(AVLTree tree) {
+  int _children(AVLTree tree) {
     if(tree == null || tree?.item == null)return 0;
-    return tree.internalElements;
+    return tree.children;
   }
 
   AVLTree insert(Item item) {
@@ -72,11 +74,11 @@ class AVLTree {
     int leftHeight = _height(this.left);
     int rightHeight = _height(this.right);
 
-    int leftElements = _internalElements(this.left);
-    int rightElements = _internalElements(this.right);
+    int leftElements = _children(this.left);
+    int rightElements = _children(this.right);
 
     this.height = _max(leftHeight, rightHeight) + 1;
-    this.internalElements = leftElements + rightElements + 1;
+    this.children = leftElements + rightElements + 1;
     int balance = leftHeight - rightHeight;
 
     if(balance > 1) {
@@ -103,8 +105,8 @@ class AVLTree {
     newRoot.right = root;
     root.height = _max(_height(root.left), _height(root.right)) + 1;
     newRoot.height = _max(_height(newRoot.right), _height(newRoot.left)) + 1;
-    root.internalElements = _internalElements(root.left) + _internalElements(root.right) + 1;
-    newRoot.internalElements = _internalElements(newRoot.left) + _internalElements(newRoot.right) + 1;
+    root.children = _children(root.left) + _children(root.right) + 1;
+    newRoot.children = _children(newRoot.left) + _children(newRoot.right) + 1;
     return newRoot;
   }
 
@@ -114,27 +116,34 @@ class AVLTree {
     newRoot.left = root;
     root.height = _max(_height(root.left), _height(root.right)) + 1;
     newRoot.height = _max(_height(newRoot.right), _height(newRoot.left)) + 1;
-    root.internalElements = _internalElements(root.left) + _internalElements(root.right) + 1;
-    newRoot.internalElements = _internalElements(newRoot.left) + _internalElements(newRoot.right) + 1;
+    root.children = _children(root.left) + _children(root.right) + 1;
+    newRoot.children = _children(newRoot.left) + _children(newRoot.right) + 1;
     return newRoot;
   }
-
 
   void inorder() {
     if(this.item == null)return ;
     this.left.inorder();
-    print("${this.item} Height: ${this.height} Internals: ${this.internalElements}");
+    print("${this.item} Height: ${this.height} Internals: ${this.children}");
     this.right.inorder();
+  }
+
+  Item median(int k) {
+//    print("${this.item}");
+    if(k == _children(this.left) + 1) 
+      return this.item;
+    else if(k <= _children(this.left))
+      return this.left.median(k);
+    else 
+      return this.right.median(k - _children(this.left) - 1);
   }
 
 }
 
-void main() {
-
-  var root = AVLTree();
-  var list = [3, 1, 2 ,4, 5, 6];
-//  list.shuffle();
-  print(list);
-  list.forEach((item) => root = root.insert(Item(key: item, value: item)));
-  root.inorder();
+Item median(AVLTree tree) {
+  int nodes = tree.children;
+  return tree.median((nodes / 2).ceil());
 }
+
+
+
