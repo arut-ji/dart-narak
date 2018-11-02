@@ -122,50 +122,15 @@ class SplayTree {
     }
   }
 
-  void preorder(SplayTree root) {
-    if(root == null)return;
-    stdout.write('${root.item} ');
-    root.preorder(root.left);
-    root.preorder(root.right);
+  List preorder(SplayTree root) {
+    if(root == null)return [];
+    return [root.item] + root.preorder(root.left) + root.preorder(root.right);
   }
 
-}
-
-main() {
-  SplayTree root = SplayTree();
-  root = root.insert(root, 3);
-  root = root.insert(root, 10);
-  root = root.insert(root, 4);
-  root = root.insert(root, 11);
-  
-  root = root.search(root, 3);
-  print('Search for 3: ${root.item == 3 ? 3 : 'Not Found'} ');
-  root.preorder(root);
-  print('');
-  root = root.insert(root, 8);
-  root = root.insert(root, 5);
-  root = root.insert(root, 6);
-
-  root = root.search(root, 7);
-  print('Search for 7: ${root.item == 7 ? 7 : 'Not Found'}');
-
-  root.preorder(root);
-  print('');
-
-  print('Remove 10:');
-  root = root.remove(root, 10);
-  root.preorder(root);
-  print('');
-
-  root = root.search(root, 5);
-  print('Search for 5: ${root.item == 5 ? 5 : 'Not Found'}');
-  root.preorder(root);
-  print('');
-  print('Remove 5:');
-  root = root.remove(root, 5);
-  root.preorder(root);
-  print('');
-
+  List inorder(SplayTree root) {
+    if(root == null) return [];
+    return root.inorder(root.left) + [root.item] + root.inorder(root.right);
+  }
 }
 
 
